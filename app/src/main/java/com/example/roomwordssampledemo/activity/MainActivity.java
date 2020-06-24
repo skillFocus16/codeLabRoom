@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.roomwordssampledemo.R;
 import com.example.roomwordssampledemo.adapter.WordListAdapter;
+import com.example.roomwordssampledemo.config.Utils;
 import com.example.roomwordssampledemo.model.Word;
 import com.example.roomwordssampledemo.model.WordViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     public static final int NEW_WORD_ACTIVITY_REQUEST_CODE = 1;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.fab);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final WordListAdapter adapter = new WordListAdapter(this);
+        final WordListAdapter adapter = new WordListAdapter(this, Utils.BOTTOM_UP);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 

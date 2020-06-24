@@ -1,6 +1,7 @@
 package com.example.roomwordssampledemo.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roomwordssampledemo.R;
+import com.example.roomwordssampledemo.activity.NewWordActivity;
 import com.example.roomwordssampledemo.model.Word;
 
 import java.util.List;
@@ -17,9 +19,14 @@ import java.util.List;
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
     private final LayoutInflater mInflater;
     private List<Word> mWords; // Cached copy of words
+    private Context context;
+    private int animation_type = 0;
 
-    public WordListAdapter(Context context) { mInflater = LayoutInflater.from(context); }
-
+    public WordListAdapter(Context context, int animation_type) {
+        mInflater = LayoutInflater.from(context);
+        this.context = context;
+        this.animation_type=animation_type;
+    }
 
     @NonNull
     @Override
@@ -29,14 +36,24 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WordViewHolder holder, final int position) {
         if (mWords != null) {
             Word current = mWords.get(position);
-            holder.wordItemView.setText(current.getWord());
+            holder.wordItemView.setText(position +" | "+current.getWord());
+
         } else {
             // Covers the case of data not being ready yet.
             holder.wordItemView.setText("No Word");
         }
+
+        holder.wordItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, NewWordActivity.class);
+                i.putExtra("wordName", mWords.get(position).getWord());
+                context.startActivity(i);
+            }
+        });
     }
 
     public void setWords(List<Word> words){
@@ -53,13 +70,14 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         else return 0;
     }
 
-
     public class WordViewHolder extends RecyclerView.ViewHolder {
         public final TextView wordItemView;
+        public final TextView itemViewDesc;
 
         private WordViewHolder(View itemView) {
             super(itemView);
             wordItemView = itemView.findViewById(R.id.textView);
+            itemViewDesc = itemView.findViewById(R.id.description);
         }
     }
 }

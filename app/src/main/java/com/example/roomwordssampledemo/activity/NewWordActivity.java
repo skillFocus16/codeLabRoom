@@ -21,7 +21,10 @@ public class NewWordActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_word);
+
         mEditWordView = findViewById(R.id.edit_word);
+
+        Intent intent = getIntent();
 
         final Button button = findViewById(R.id.button_save);
         button.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +40,15 @@ public class NewWordActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        try {
+            String src = intent.getExtras().getString ("wordName", "");
+            if (!src.equals("")) {
+                mEditWordView.setText(src);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
